@@ -80,12 +80,14 @@ class Calc(QtWidgets.QMainWindow):
         self.operation('/')
 
     def button_percent(self):
-        self.display = str(ceil(int(self.buffer) * int(self.display) / 100))
-        self.ui.label.setText(self.display)
+        if self.ui.label.text() != 'Error':
+            self.display = str(ceil(int(self.buffer) * int(self.display) / 100))
+            self.ui.label.setText(self.display)
 
     def button_sqrt(self):
-        self.operation('**')
-        self.button_answer()
+        if self.ui.label.text() != 'Error':
+            self.operation('**')
+            self.button_answer()
 
     def button_answer(self):
         if self.operator == '**':
@@ -100,7 +102,7 @@ class Calc(QtWidgets.QMainWindow):
             try:
                 answer = str(ceil(eval(self.buffer + self.operator + self.display)))
                 self.display = answer
-                if len(self.display) < 10 or len(self.display) <= 11 and self.display[0] == '-':
+                if len(self.display) <= 10 or len(self.display) <= 11 and self.display[0] == '-':
                     self.ui.label.setText(self.display)
                     self.operator = ''
                     self.new_operation = True
